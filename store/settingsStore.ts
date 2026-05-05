@@ -44,21 +44,26 @@ export interface SettingsState {
   setDiceMaterial: (v: DiceMaterial) => void
   setTrayBackground: (v: DiceTrayBackground) => void
   setShowDetailedResults: (v: boolean) => void
+  reset: () => void
+}
+
+export const DEFAULT_SETTINGS = {
+  soundEnabled: true,
+  volume: 0.6,
+  vibrationEnabled: true,
+  use3D: true,
+  reducedMotion: false,
+  diceColor: "purple" as DiceColor,
+  diceMaterial: "plastic" as DiceMaterial,
+  trayBackground: "felt" as DiceTrayBackground,
+  cryptoSecure: true,
+  showDetailedResults: true,
 }
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      soundEnabled: true,
-      volume: 0.6,
-      vibrationEnabled: true,
-      use3D: true,
-      reducedMotion: false,
-      diceColor: "purple",
-      diceMaterial: "plastic",
-      trayBackground: "felt",
-      cryptoSecure: true,
-      showDetailedResults: true,
+      ...DEFAULT_SETTINGS,
       setSoundEnabled: (soundEnabled) => set({ soundEnabled }),
       setVolume: (volume) => set({ volume }),
       setVibrationEnabled: (vibrationEnabled) => set({ vibrationEnabled }),
@@ -69,6 +74,7 @@ export const useSettingsStore = create<SettingsState>()(
       setTrayBackground: (trayBackground) => set({ trayBackground }),
       setShowDetailedResults: (showDetailedResults) =>
         set({ showDetailedResults }),
+      reset: () => set(DEFAULT_SETTINGS),
     }),
     { name: "dice-online:settings" },
   ),

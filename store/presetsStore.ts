@@ -8,6 +8,7 @@ export interface PresetsState {
   updatePreset: (id: string, patch: Partial<Preset>) => void
   removePreset: (id: string) => void
   reorderPresets: (ids: string[]) => void
+  reset: () => void
 }
 
 function generateId() {
@@ -46,6 +47,7 @@ export const usePresetsStore = create<PresetsState>()(
             })
             .filter((p): p is Preset => p !== null),
         })),
+      reset: () => set({ presets: [] }),
     }),
     { name: "dice-online:presets" },
   ),

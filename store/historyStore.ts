@@ -9,6 +9,7 @@ export interface HistoryState {
   addRoll: (roll: RollResult) => void
   removeRoll: (id: string) => void
   clearAll: () => void
+  reset: () => void
 }
 
 export const useHistoryStore = create<HistoryState>()(
@@ -22,6 +23,7 @@ export const useHistoryStore = create<HistoryState>()(
       removeRoll: (id) =>
         set((state) => ({ rolls: state.rolls.filter((r) => r.id !== id) })),
       clearAll: () => set({ rolls: [] }),
+      reset: () => set({ rolls: [] }),
     }),
     { name: "dice-online:history" },
   ),
