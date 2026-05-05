@@ -70,7 +70,10 @@
     "helpEx4": "능력치 굴림: 4d6dl1 (6회)",
     "helpEx5": "기습: 1d20+7 → 1d8+3+3d6",
     "helpClose": "확인",
-    "helpHint": "표기법 도움말"
+    "helpHint": "표기법 도움말",
+    "removeAll": "모두 제거",
+    "modifierHint": "합계에 더하는 고정 보정값 (예: +5 능력 보정, -2 엄폐 페널티).",
+    "pool": "선택"
   },
   "history": {
     "title": "기록",

@@ -70,7 +70,10 @@
     "helpEx4": "Stat array: 4d6dl1 (six times)",
     "helpEx5": "Sneak attack with rogue: 1d20+7 then 1d8+3+3d6",
     "helpClose": "Got it",
-    "helpHint": "Show notation help"
+    "helpHint": "Show notation help",
+    "removeAll": "Remove all",
+    "modifierHint": "Flat bonus or malus added to the total (e.g. +5 ability modifier, -2 cover penalty).",
+    "pool": "Pool"
   },
   "history": {
     "title": "History",

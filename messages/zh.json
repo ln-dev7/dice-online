@@ -70,7 +70,10 @@
     "helpEx4": "属性生成:4d6dl1(六次)",
     "helpEx5": "偷袭:1d20+7,然后 1d8+3+3d6",
     "helpClose": "知道了",
-    "helpHint": "查看公式说明"
+    "helpHint": "查看公式说明",
+    "removeAll": "全部移除",
+    "modifierHint": "加到总和的固定加值或减值(例:+5 属性加值,-2 掩护减值)。",
+    "pool": "选择"
   },
   "history": {
     "title": "历史",

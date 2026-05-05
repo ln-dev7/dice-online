@@ -26,11 +26,10 @@ export function DiceSelector() {
   const addGroup = useDiceStore((s) => s.addGroup)
   const removeGroup = useDiceStore((s) => s.removeGroup)
   const updateGroupCount = useDiceStore((s) => s.updateGroupCount)
+  const setGroups = useDiceStore((s) => s.setGroups)
   const setModifier = useDiceStore((s) => s.setModifier)
   const t = useTranslations("dice")
 
-  // Compte total par type (un type peut avoir plusieurs groupes si l'utilisateur
-  // a édité la notation directement, donc on agrège)
   const totalByType = (type: DiceType) =>
     groups
       .filter((g) => g.type === type)
@@ -42,6 +41,17 @@ export function DiceSelector() {
       updateGroupCount(existing.id, existing.count + 1)
     } else {
       addGroup(type)
+    }
+  }
+
+  // Supprime TOUS les groupes d'un type donné. Garantit qu'il reste au moins
+  // un dé : si on retire le dernier groupe, on retombe sur 1d6 par défaut.
+  const removeAllOfType = (type: DiceType) => {
+    const remaining = groups.filter((g) => g.type !== type)
+    if (remaining.length === 0) {
+      setGroups([{ id: "default", type: "d6", count: 1 }])
+    } else {
+      setGroups(remaining)
     }
   }
 
@@ -57,35 +67,53 @@ export function DiceSelector() {
             const count = totalByType(type)
             const active = count > 0
             return (
-              <button
-                key={type}
-                type="button"
-                onClick={() => incrementType(type)}
-                aria-label={`${type} +1`}
-                className={cn(
-                  "relative flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border font-mono transition-all",
-                  "hover:border-primary hover:bg-accent active:scale-95",
-                  "focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
-                  active
-                    ? "border-primary bg-primary/10"
-                    : "border-input bg-card",
-                )}
-              >
-                <span className="text-3xl leading-none" aria-hidden>
-                  {DICE_ICONS[type]}
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wide">
-                  {type}
-                </span>
-                {count > 0 && (
-                  <span
-                    className="bg-primary text-primary-foreground absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-[10px] font-bold"
-                    aria-label={`${count} ${type}`}
-                  >
-                    {count}
+              <div key={type} className="relative">
+                <button
+                  type="button"
+                  onClick={() => incrementType(type)}
+                  aria-label={`${type} +1`}
+                  className={cn(
+                    "relative flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-lg border font-mono transition-all",
+                    "hover:border-primary hover:bg-accent active:scale-95",
+                    "focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
+                    active
+                      ? "border-primary bg-primary/10"
+                      : "border-input bg-card",
+                  )}
+                >
+                  <span className="text-3xl leading-none" aria-hidden>
+                    {DICE_ICONS[type]}
                   </span>
+                  <span className="text-xs font-semibold uppercase tracking-wide">
+                    {type}
+                  </span>
+                  {count > 0 && (
+                    <span
+                      className="bg-primary text-primary-foreground absolute -bottom-1.5 -right-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-[10px] font-bold"
+                      aria-label={`${count} ${type}`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+                {active && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      removeAllOfType(type)
+                    }}
+                    aria-label={`${t("removeAll")} ${type}`}
+                    className={cn(
+                      "absolute -left-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full",
+                      "bg-destructive text-white shadow",
+                      "hover:scale-110 focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
+                    )}
+                  >
+                    <X className="size-3" />
+                  </button>
                 )}
-              </button>
+              </div>
             )
           })}
         </div>
@@ -95,7 +123,7 @@ export function DiceSelector() {
       {groups.length > 0 && (
         <div>
           <label className="text-muted-foreground mb-2 block text-xs font-medium">
-            Pool
+            {t("pool")}
           </label>
           <div className="flex flex-wrap gap-1.5">
             {groups.map((g) => (
@@ -136,7 +164,7 @@ export function DiceSelector() {
                   className="size-6 rounded-full"
                   onClick={() => removeGroup(g.id)}
                   disabled={groups.length <= 1}
-                  aria-label="Remove"
+                  aria-label={t("removeAll")}
                 >
                   <X className="size-3" />
                 </Button>
@@ -147,10 +175,10 @@ export function DiceSelector() {
       )}
 
       {/* Modificateur global */}
-      <div className="flex items-center gap-2">
+      <div className="space-y-1.5">
         <label
           htmlFor="modifier"
-          className="text-muted-foreground text-xs font-medium"
+          className="text-muted-foreground block text-xs font-medium"
         >
           {t("modifier")}
         </label>
@@ -185,6 +213,9 @@ export function DiceSelector() {
             <Plus className="size-3" />
           </Button>
         </div>
+        <p className="text-muted-foreground text-xs leading-relaxed">
+          {t("modifierHint")}
+        </p>
       </div>
     </div>
   )

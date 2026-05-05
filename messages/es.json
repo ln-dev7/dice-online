@@ -70,7 +70,10 @@
     "helpEx4": "Generar stats: 4d6dl1 (seis veces)",
     "helpEx5": "Ataque furtivo: 1d20+7 luego 1d8+3+3d6",
     "helpClose": "Entendido",
-    "helpHint": "Mostrar ayuda de notación"
+    "helpHint": "Mostrar ayuda de notación",
+    "removeAll": "Quitar todo",
+    "modifierHint": "Bonificador/penalizador fijo añadido al total (ej. +5 modificador de habilidad, -2 cobertura).",
+    "pool": "Selección"
   },
   "history": {
     "title": "Historial",

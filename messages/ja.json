@@ -70,7 +70,10 @@
     "helpEx4": "能力値生成: 4d6dl1(6 回)",
     "helpEx5": "急所攻撃: 1d20+7 → 1d8+3+3d6",
     "helpClose": "了解",
-    "helpHint": "表記ヘルプを開く"
+    "helpHint": "表記ヘルプを開く",
+    "removeAll": "すべて削除",
+    "modifierHint": "合計に加える固定の修正値(例:+5 能力修正、-2 遮蔽ペナルティ)。",
+    "pool": "選択"
   },
   "history": {
     "title": "履歴",

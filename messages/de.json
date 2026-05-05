@@ -70,7 +70,10 @@
     "helpEx4": "Werte würfeln: 4d6dl1 (sechs Mal)",
     "helpEx5": "Hinterhältiger Angriff: 1d20+7, dann 1d8+3+3d6",
     "helpClose": "Verstanden",
-    "helpHint": "Notations-Hilfe öffnen"
+    "helpHint": "Notations-Hilfe öffnen",
+    "removeAll": "Alle entfernen",
+    "modifierHint": "Fester Bonus/Malus zum Gesamtwert (z. B. +5 Attributsmodifikator, -2 Deckungsmalus).",
+    "pool": "Auswahl"
   },
   "history": {
     "title": "Verlauf",

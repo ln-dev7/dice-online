@@ -70,7 +70,10 @@
     "helpEx4": "Statistiche: 4d6dl1 (sei volte)",
     "helpEx5": "Attacco furtivo: 1d20+7 poi 1d8+3+3d6",
     "helpClose": "Ok",
-    "helpHint": "Aiuto notazione"
+    "helpHint": "Aiuto notazione",
+    "removeAll": "Rimuovi tutti",
+    "modifierHint": "Bonus/malus fisso aggiunto al totale (es. +5 modificatore, -2 copertura).",
+    "pool": "Selezione"
   },
   "history": {
     "title": "Cronologia",

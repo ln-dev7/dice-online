@@ -70,7 +70,10 @@
     "helpEx4": "Stats: 4d6dl1 (seis vezes)",
     "helpEx5": "Ataque furtivo: 1d20+7 e 1d8+3+3d6",
     "helpClose": "Entendi",
-    "helpHint": "Ajuda da notação"
+    "helpHint": "Ajuda da notação",
+    "removeAll": "Remover tudo",
+    "modifierHint": "Bônus/penalidade fixo somado ao total (ex.: +5 modificador, -2 cobertura).",
+    "pool": "Seleção"
   },
   "history": {
     "title": "Histórico",

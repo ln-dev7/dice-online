@@ -70,7 +70,10 @@
     "helpEx4": "Génération de stats : 4d6dl1 (six fois)",
     "helpEx5": "Attaque sournoise (rôdeur) : 1d20+7 puis 1d8+3+3d6",
     "helpClose": "Compris",
-    "helpHint": "Afficher l'aide sur la notation"
+    "helpHint": "Afficher l'aide sur la notation",
+    "removeAll": "Tout retirer",
+    "modifierHint": "Bonus ou malus fixe ajouté au total (ex: +5 modificateur de Force, -2 pénalité de couvert).",
+    "pool": "Sélection"
   },
   "history": {
     "title": "Historique",
