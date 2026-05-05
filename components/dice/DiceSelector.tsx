@@ -1,13 +1,8 @@
 "use client"
 
-import { Minus, Plus, Trash2, X } from "lucide-react"
+import { Minus, Plus, X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { useDiceStore } from "@/store/diceStore"
 import { DICE_TYPES, type DiceType } from "@/types/dice"
@@ -30,124 +25,126 @@ export function DiceSelector() {
   const modifier = useDiceStore((s) => s.modifier)
   const addGroup = useDiceStore((s) => s.addGroup)
   const removeGroup = useDiceStore((s) => s.removeGroup)
-  const updateGroupType = useDiceStore((s) => s.updateGroupType)
   const updateGroupCount = useDiceStore((s) => s.updateGroupCount)
   const setModifier = useDiceStore((s) => s.setModifier)
   const t = useTranslations("dice")
 
+  // Compte total par type (un type peut avoir plusieurs groupes si l'utilisateur
+  // a édité la notation directement, donc on agrège)
+  const totalByType = (type: DiceType) =>
+    groups
+      .filter((g) => g.type === type)
+      .reduce((sum, g) => sum + g.count, 0)
+
+  const incrementType = (type: DiceType) => {
+    const existing = groups.find((g) => g.type === type)
+    if (existing) {
+      updateGroupCount(existing.id, existing.count + 1)
+    } else {
+      addGroup(type)
+    }
+  }
+
   return (
     <div className="space-y-3">
-      <label className="text-muted-foreground block text-xs font-medium">
-        {t("diceType")}
-      </label>
-
-      <div className="space-y-2">
-        {groups.map((g) => (
-          <div
-            key={g.id}
-            className="bg-card flex items-center gap-2 rounded-lg border p-2"
-          >
-            {/* Count buttons */}
-            <div className="flex items-center gap-1">
-              <Button
+      {/* Palette de dés : tap pour ajouter */}
+      <div>
+        <label className="text-muted-foreground mb-2 block text-xs font-medium">
+          {t("diceType")}
+        </label>
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+          {DICE_TYPES.map((type) => {
+            const count = totalByType(type)
+            const active = count > 0
+            return (
+              <button
+                key={type}
                 type="button"
-                size="icon"
-                variant="outline"
-                className="size-7"
-                onClick={() => updateGroupCount(g.id, g.count - 1)}
-                disabled={g.count <= 1}
-                aria-label={t("decrease")}
+                onClick={() => incrementType(type)}
+                aria-label={`${type} +1`}
+                className={cn(
+                  "relative flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border font-mono transition-all",
+                  "hover:border-primary hover:bg-accent active:scale-95",
+                  "focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
+                  active
+                    ? "border-primary bg-primary/10"
+                    : "border-input bg-card",
+                )}
               >
-                <Minus className="size-3" />
-              </Button>
-              <span className="w-7 text-center font-mono text-sm font-semibold tabular-nums">
-                {g.count}
-              </span>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                className="size-7"
-                onClick={() => updateGroupCount(g.id, g.count + 1)}
-                disabled={g.count >= 100}
-                aria-label={t("increase")}
+                <span className="text-3xl leading-none" aria-hidden>
+                  {DICE_ICONS[type]}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wide">
+                  {type}
+                </span>
+                {count > 0 && (
+                  <span
+                    className="bg-primary text-primary-foreground absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-[10px] font-bold"
+                    aria-label={`${count} ${type}`}
+                  >
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Chips de la sélection actuelle */}
+      {groups.length > 0 && (
+        <div>
+          <label className="text-muted-foreground mb-2 block text-xs font-medium">
+            Pool
+          </label>
+          <div className="flex flex-wrap gap-1.5">
+            {groups.map((g) => (
+              <div
+                key={g.id}
+                className="bg-secondary text-secondary-foreground flex items-center gap-0.5 rounded-full pl-2 pr-0.5 py-0.5"
               >
-                <Plus className="size-3" />
-              </Button>
-            </div>
-
-            <span className="text-muted-foreground font-mono text-xs">×</span>
-
-            {/* Type picker */}
-            <Popover>
-              <PopoverTrigger asChild>
                 <Button
                   type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-9 flex-1 justify-start gap-2"
+                  size="icon"
+                  variant="ghost"
+                  className="size-6 rounded-full"
+                  onClick={() => updateGroupCount(g.id, g.count - 1)}
+                  disabled={g.count <= 1}
+                  aria-label={t("decrease")}
                 >
-                  <span className="text-base leading-none" aria-hidden>
-                    {DICE_ICONS[g.type]}
-                  </span>
-                  <span className="font-mono uppercase">{g.type}</span>
+                  <Minus className="size-3" />
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56 p-2" align="start">
-                <div className="grid grid-cols-3 gap-1.5">
-                  {DICE_TYPES.map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => updateGroupType(g.id, type)}
-                      aria-label={type}
-                      aria-pressed={g.type === type}
-                      className={cn(
-                        "flex aspect-square flex-col items-center justify-center gap-0.5 rounded-md border font-mono text-xs transition-colors",
-                        "hover:bg-accent focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:outline-none",
-                        g.type === type
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-input",
-                      )}
-                    >
-                      <span className="text-2xl leading-none" aria-hidden>
-                        {DICE_ICONS[type]}
-                      </span>
-                      <span className="font-semibold uppercase">{type}</span>
-                    </button>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="size-8 shrink-0"
-              onClick={() => removeGroup(g.id)}
-              disabled={groups.length <= 1}
-              aria-label={t("dropped")}
-            >
-              {groups.length > 1 ? (
-                <Trash2 className="size-3.5" />
-              ) : (
-                <X className="size-3.5 opacity-30" />
-              )}
-            </Button>
+                <span className="px-1 font-mono text-sm font-semibold tabular-nums">
+                  {g.count}
+                  {g.type}
+                </span>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="size-6 rounded-full"
+                  onClick={() => updateGroupCount(g.id, g.count + 1)}
+                  disabled={g.count >= 100}
+                  aria-label={t("increase")}
+                >
+                  <Plus className="size-3" />
+                </Button>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="size-6 rounded-full"
+                  onClick={() => removeGroup(g.id)}
+                  disabled={groups.length <= 1}
+                  aria-label="Remove"
+                >
+                  <X className="size-3" />
+                </Button>
+              </div>
+            ))}
           </div>
-        ))}
-
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="w-full border-dashed"
-          onClick={() => addGroup("d6")}
-        >
-          <Plus className="size-3.5" />
-          {t("diceType")} +
-        </Button>
-      </div>
+        </div>
+      )}
 
       {/* Modificateur global */}
       <div className="flex items-center gap-2">
@@ -157,13 +154,37 @@ export function DiceSelector() {
         >
           {t("modifier")}
         </label>
-        <Input
-          id="modifier"
-          type="number"
-          value={modifier}
-          onChange={(e) => setModifier(Number.parseInt(e.target.value, 10) || 0)}
-          className="h-8 w-20 font-mono"
-        />
+        <div className="flex items-center gap-1">
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            className="size-8"
+            onClick={() => setModifier(modifier - 1)}
+            aria-label={t("decrease")}
+          >
+            <Minus className="size-3" />
+          </Button>
+          <Input
+            id="modifier"
+            type="number"
+            value={modifier}
+            onChange={(e) =>
+              setModifier(Number.parseInt(e.target.value, 10) || 0)
+            }
+            className="h-8 w-16 text-center font-mono"
+          />
+          <Button
+            type="button"
+            size="icon"
+            variant="outline"
+            className="size-8"
+            onClick={() => setModifier(modifier + 1)}
+            aria-label={t("increase")}
+          >
+            <Plus className="size-3" />
+          </Button>
+        </div>
       </div>
     </div>
   )
