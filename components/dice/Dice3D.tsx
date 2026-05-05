@@ -50,20 +50,16 @@ const DICE_TEXT_COLOR: Record<DiceColor, string> = {
   "neon-cyan": "#0c1e2c",
 }
 
-// Pour BoxGeometry, Three.js attend l'ordre des matériaux : [+X, -X, +Y, -Y, +Z, -Z]
-// On mappe à un dé classique où la somme des faces opposées vaut 7 :
-//   +X = 1, -X = 6, +Y = 2, -Y = 5, +Z = 3, -Z = 4
+// Pour BoxGeometry, ordre des matériaux : [+X, -X, +Y, -Y, +Z, -Z]
 const D6_FACE_AT_AXIS: number[] = [1, 6, 2, 5, 3, 4]
 
-// Rotation à appliquer au mesh pour amener une face donnée vers la caméra (+Z).
-// Calculée à partir du tableau ci-dessus.
 const D6_FACE_ROTATIONS: Record<number, [number, number, number]> = {
-  1: [0, -Math.PI / 2, 0], // amène +X (face 1) sur +Z
-  6: [0, Math.PI / 2, 0], // amène -X (face 6) sur +Z
-  2: [Math.PI / 2, 0, 0], // amène +Y (face 2) sur +Z
-  5: [-Math.PI / 2, 0, 0], // amène -Y (face 5) sur +Z
-  3: [0, 0, 0], // face 3 (+Z) déjà devant
-  4: [0, Math.PI, 0], // amène -Z (face 4) sur +Z
+  1: [0, -Math.PI / 2, 0],
+  6: [0, Math.PI / 2, 0],
+  2: [Math.PI / 2, 0, 0],
+  5: [-Math.PI / 2, 0, 0],
+  3: [0, 0, 0],
+  4: [0, Math.PI, 0],
 }
 
 function createFaceTexture(value: number, bg: string, fg: string): CanvasTexture {
@@ -168,10 +164,10 @@ interface DieMeshProps {
   spinning: boolean
   color: DiceColor
   material: DiceMaterial
-  /** Rotation cible appliquée par l'utilisateur via la souris (en idle). */
   userRotation: { x: number; y: number }
-  /** Valeur sortie après le lancer (pour snap-to-face d6). */
   resultValue?: number
+  position?: [number, number, number]
+  spinSeed?: number
 }
 
 function DieMesh({
@@ -181,6 +177,8 @@ function DieMesh({
   material,
   userRotation,
   resultValue,
+  position = [0, 0, 0],
+  spinSeed = 1,
 }: DieMeshProps) {
   const meshRef = useRef<Mesh>(null)
   const wasSpinning = useRef(false)
@@ -192,19 +190,15 @@ function DieMesh({
   const materials = useMemo(() => {
     if (type !== "d6") return null
     const matProps = getMaterialProps(material, colorHex)
-    // Quand on applique une texture, la couleur du material multiplie la texture.
-    // On force `color: white` pour que les couleurs de la texture passent inchangées.
     return D6_FACE_AT_AXIS.map((face) => {
       const tex = createFaceTexture(face, colorHex, fgHex)
       return new MeshStandardMaterial({ ...matProps, color: "#ffffff", map: tex })
     })
   }, [type, material, colorHex, fgHex])
 
-  // Cible de rotation : soit la face du résultat (snap), soit la rotation utilisateur (idle).
   const targetRotation = useMemo<[number, number, number]>(() => {
     if (type === "d6" && resultValue && D6_FACE_ROTATIONS[resultValue]) {
       const [tx, ty, tz] = D6_FACE_ROTATIONS[resultValue]
-      // Ajoute la rotation utilisateur après le snap pour qu'il puisse continuer à inspecter
       return [tx + userRotation.x, ty + userRotation.y, tz]
     }
     return [userRotation.x, userRotation.y, 0]
@@ -215,20 +209,19 @@ function DieMesh({
     if (!mesh) return
 
     if (spinning) {
-      // Pendant le lancer : on tourne en continu, l'utilisateur ne peut pas intervenir
-      mesh.rotation.x += delta * 6
-      mesh.rotation.y += delta * 8
-      mesh.rotation.z += delta * 4
+      // Vitesse légèrement variable par dé pour éviter une rotation synchronisée
+      const variance = 0.7 + ((spinSeed * 13) % 100) / 200
+      mesh.rotation.x += delta * 6 * variance
+      mesh.rotation.y += delta * 8 * variance
+      mesh.rotation.z += delta * 4 * variance
       wasSpinning.current = true
       return
     }
 
-    // Sortie de spin : snap vers la face cible (animation rapide)
     if (wasSpinning.current) {
       mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetRotation[0], delta * 12)
       mesh.rotation.y = MathUtils.lerp(mesh.rotation.y, targetRotation[1], delta * 12)
       mesh.rotation.z = MathUtils.lerp(mesh.rotation.z, targetRotation[2], delta * 12)
-
       const close =
         Math.abs(mesh.rotation.x - targetRotation[0]) < 0.005 &&
         Math.abs(mesh.rotation.y - targetRotation[1]) < 0.005 &&
@@ -240,7 +233,6 @@ function DieMesh({
       return
     }
 
-    // En idle : on suit directement la rotation imposée par l'utilisateur (souris)
     mesh.rotation.set(...targetRotation)
   })
 
@@ -250,6 +242,7 @@ function DieMesh({
         ref={meshRef}
         geometry={geometry}
         material={materials}
+        position={position}
         castShadow
         receiveShadow
       />
@@ -258,56 +251,80 @@ function DieMesh({
 
   const props = getMaterialProps(material, colorHex)
   return (
-    <mesh ref={meshRef} geometry={geometry} castShadow receiveShadow>
+    <mesh
+      ref={meshRef}
+      geometry={geometry}
+      position={position}
+      castShadow
+      receiveShadow
+    >
       <meshStandardMaterial {...props} />
     </mesh>
   )
 }
 
-interface Dice3DProps {
+export interface Dice3DItem {
   type: DiceType
-  spinning: boolean
-  /** Numéro à afficher en overlay (utilisé pour les dés non-d6). */
   value?: number
-  showOverlayNumber?: boolean
+}
+
+interface Dice3DProps {
+  /** Liste des dés à afficher en 3D (tous types confondus). */
+  dice: Dice3DItem[]
+  spinning: boolean
   className?: string
 }
 
-export function Dice3D({
-  type,
-  spinning,
-  value,
-  showOverlayNumber = true,
-  className,
-}: Dice3DProps) {
+// Layout en grille des dés. Pour N dés, calcule cols/rows + offsets centrés.
+function computeLayout(n: number): {
+  positions: [number, number, number][]
+  spacing: number
+} {
+  const cols = Math.ceil(Math.sqrt(n))
+  const rows = Math.ceil(n / cols)
+  const spacing = n <= 1 ? 0 : 2.6
+  const positions: [number, number, number][] = []
+  for (let i = 0; i < n; i++) {
+    const r = Math.floor(i / cols)
+    const c = i % cols
+    const x = (c - (cols - 1) / 2) * spacing
+    const y = ((rows - 1) / 2 - r) * spacing
+    positions.push([x, y, 0])
+  }
+  return { positions, spacing }
+}
+
+export function Dice3D({ dice, spinning, className }: Dice3DProps) {
   const diceColor = useSettingsStore((s) => s.diceColor)
   const material = useSettingsStore((s) => s.diceMaterial)
   const reducedMotion = useSettingsStore((s) => s.reducedMotion)
 
-  // Rotation contrôlée par la souris.
   const [rotation, setRotation] = useState({ x: 0.3, y: 0.4 })
   const dragRef = useRef<{ x: number; y: number } | null>(null)
 
-  // Pattern "store previous prop in state" pour reset la rotation quand
-  // la valeur change (cf. https://react.dev/reference/react/useState#storing-information-from-previous-renders).
-  const [prevValue, setPrevValue] = useState(value)
+  // Reset la rotation user quand un nouveau résultat arrive (snap-to-face propre)
+  const valuesKey = dice.map((d) => d.value ?? "?").join("|")
+  const [prevValuesKey, setPrevValuesKey] = useState(valuesKey)
   if (
     !spinning &&
-    type === "d6" &&
-    value !== undefined &&
-    value !== prevValue
+    valuesKey !== prevValuesKey &&
+    dice.every((d) => d.value !== undefined)
   ) {
-    setPrevValue(value)
+    setPrevValuesKey(valuesKey)
     setRotation({ x: 0, y: 0 })
   }
 
+  const { positions } = computeLayout(dice.length)
+
+  // Calcule la distance camera adaptative (vue large pour beaucoup de dés)
+  const cols = Math.ceil(Math.sqrt(dice.length))
+  const camZ = Math.max(5, 4 + cols * 1.2)
+
   const handlePointerDown = (e: React.PointerEvent) => {
     if (spinning) return
-    const target = e.currentTarget
-    target.setPointerCapture(e.pointerId)
+    e.currentTarget.setPointerCapture(e.pointerId)
     dragRef.current = { x: e.clientX, y: e.clientY }
   }
-
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!dragRef.current) return
     const dx = e.clientX - dragRef.current.x
@@ -318,15 +335,12 @@ export function Dice3D({
       y: prev.y + dx * 0.01,
     }))
   }
-
   const handlePointerUp = (e: React.PointerEvent) => {
     if (dragRef.current) {
       e.currentTarget.releasePointerCapture(e.pointerId)
       dragRef.current = null
     }
   }
-
-  const useOverlay = showOverlayNumber && type !== "d6" && value !== undefined
 
   return (
     <div
@@ -341,7 +355,7 @@ export function Dice3D({
       }}
     >
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        camera={{ position: [0, 0, camZ], fov: 50 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         frameloop={reducedMotion && !spinning ? "demand" : "always"}
@@ -349,25 +363,20 @@ export function Dice3D({
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow />
         <pointLight position={[-3, -3, 2]} intensity={0.5} color="#a78bfa" />
-        <DieMesh
-          type={type}
-          spinning={spinning}
-          color={diceColor}
-          material={material}
-          userRotation={rotation}
-          resultValue={value}
-        />
+        {dice.map((d, i) => (
+          <DieMesh
+            key={i}
+            type={d.type}
+            spinning={spinning}
+            color={diceColor}
+            material={material}
+            userRotation={rotation}
+            resultValue={d.value}
+            position={positions[i]}
+            spinSeed={i + 1}
+          />
+        ))}
       </Canvas>
-
-      {useOverlay && !spinning && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="rounded-xl border border-white/20 bg-black/35 px-3 py-1 backdrop-blur-md">
-            <span className="font-mono text-3xl font-bold text-white tabular-nums drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
-              {value}
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

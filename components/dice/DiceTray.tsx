@@ -15,6 +15,10 @@ const Dice3D = dynamic(
   { ssr: false, loading: () => <div className="size-full" /> },
 )
 
+// On garde le 3D activé jusqu'à 9 d6 (3×3 grille). Au-delà, la lecture des
+// numéros devient pénible et le rendu plus coûteux → on retombe en 2D.
+const MAX_3D_DICE = 9
+
 // Backgrounds en CSS direct (Tailwind v4 ne combine pas toujours bien
 // `bg-[radial-gradient(...)]` avec les utilitaires `from-*/via-*/to-*`).
 const TRAY_BG_STYLE: Record<DiceTrayBackground, React.CSSProperties> = {
@@ -84,22 +88,14 @@ export function DiceTray({ className }: DiceTrayProps) {
   const visible = dice.slice(0, MAX_VISIBLE_DICE)
   const overflow = Math.max(0, dice.length - MAX_VISIBLE_DICE)
 
-  // Seul le d6 (cube avec textures peintes par face) bénéficie d'un rendu 3D
-  // satisfaisant. Tous les autres dés retombent en 2D pour garantir des numéros
-  // lisibles sur chaque face.
-  const SUPPORTS_3D: Record<DiceType, boolean> = {
-    d2: false,
-    d3: false,
-    d4: false,
-    d6: true,
-    d8: false,
-    d10: false,
-    d12: false,
-    d20: false,
-    d100: false,
-  }
-  const showSingle3D =
-    use3D && visible.length === 1 && SUPPORTS_3D[visible[0]!.type]
+  // 3D activé uniquement si tous les dés visibles sont des d6 (le seul
+  // type avec un rendu 3D satisfaisant : cube + textures de face).
+  // Plafonné à MAX_3D_DICE pour la lisibilité.
+  const all3D =
+    use3D &&
+    visible.length > 0 &&
+    visible.length <= MAX_3D_DICE &&
+    visible.every((d) => d.type === "d6")
   const dieSize = visible.length <= 1 ? 220 : visible.length <= 4 ? 100 : 72
 
   return (
@@ -120,12 +116,14 @@ export function DiceTray({ className }: DiceTrayProps) {
         )}
       />
 
-      {showSingle3D ? (
+      {all3D ? (
         <div className="relative size-full p-6">
           <Dice3D
-            type={visible[0]!.type}
+            dice={visible.map((d) => ({
+              type: d.type,
+              value: result && !isRolling ? d.value : undefined,
+            }))}
             spinning={isRolling}
-            value={visible[0]!.value}
           />
         </div>
       ) : (
