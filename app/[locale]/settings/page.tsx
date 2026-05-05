@@ -40,6 +40,8 @@ export default async function SettingsPage({
           <SoundSettings />
         </div>
 
+        <DataManagement />
+
         <Card>
           <CardHeader>
             <CardTitle>{t("fairDice")}</CardTitle>
@@ -53,8 +55,6 @@ export default async function SettingsPage({
             </p>
           </CardContent>
         </Card>
-
-        <DataManagement />
       </div>
     </AppShell>
   )
