@@ -1,6 +1,6 @@
 "use client"
 
-import { Dice5, Repeat, Zap, ZapOff } from "lucide-react"
+import { Dice5, Zap, ZapOff } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -53,10 +53,10 @@ export function DiceRoller() {
             </Tabs>
           </div>
 
-          <div className="hidden gap-2 md:flex">
+          <div className="hidden md:block">
             <Button
               size="lg"
-              className="flex-1"
+              className="w-full"
               onClick={() => roll()}
               disabled={isRolling}
               aria-label={t("rollWithShortcut")}
@@ -64,41 +64,22 @@ export function DiceRoller() {
               <Dice5 className="size-4" />
               {rollLabel}
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => roll()}
-              disabled={isRolling}
-              aria-label={t("rollAgain")}
-            >
-              <Repeat className="size-4" />
-            </Button>
           </div>
         </div>
       </div>
 
       {/* FAB mobile */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 p-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:hidden">
-        <div className="mx-auto flex max-w-md gap-2">
+        <div className="mx-auto flex max-w-md">
           <Button
             size="lg"
-            className="h-12 flex-1 text-base shadow-lg"
+            className="h-12 w-full text-base shadow-lg"
             onClick={() => roll()}
             disabled={isRolling}
             aria-label={t("rollDice")}
           >
             <Dice5 className="size-5" />
             {rollLabelMobile}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-12"
-            onClick={() => roll()}
-            disabled={isRolling}
-            aria-label={t("rollAgain")}
-          >
-            <Repeat className="size-5" />
           </Button>
         </div>
       </div>
