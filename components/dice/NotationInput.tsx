@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { useDiceStore } from "@/store/diceStore"
 import { parseNotation, NotationError } from "@/lib/diceParser"
 import { cn } from "@/lib/utils"
+import { NotationHelpDialog } from "@/components/dice/NotationHelpDialog"
 
 export function NotationInput() {
   const notation = useDiceStore((s) => s.notation)
@@ -32,18 +33,21 @@ export function NotationInput() {
   return (
     <div className="space-y-1.5">
       <Label htmlFor="notation">{t("notation")}</Label>
-      <Input
-        id="notation"
-        value={notation}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={t("notationHint")}
-        spellCheck={false}
-        autoCapitalize="off"
-        autoCorrect="off"
-        className={cn("font-mono", error && "border-destructive")}
-        aria-invalid={!!error}
-        aria-describedby={error ? "notation-error" : "notation-hint"}
-      />
+      <div className="flex gap-2">
+        <Input
+          id="notation"
+          value={notation}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={t("notationHint")}
+          spellCheck={false}
+          autoCapitalize="off"
+          autoCorrect="off"
+          className={cn("flex-1 font-mono", error && "border-destructive")}
+          aria-invalid={!!error}
+          aria-describedby={error ? "notation-error" : "notation-hint"}
+        />
+        <NotationHelpDialog />
+      </div>
       {error ? (
         <p id="notation-error" className="text-destructive text-xs">
           {error}
