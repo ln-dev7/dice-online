@@ -15,14 +15,27 @@ const Dice3D = dynamic(
   { ssr: false, loading: () => <div className="size-full" /> },
 )
 
-const TRAY_BG: Record<DiceTrayBackground, string> = {
-  felt: "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-700 via-emerald-800 to-emerald-950",
-  wood: "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-700 via-amber-800 to-amber-950",
-  stone:
-    "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-500 via-slate-700 to-slate-900",
-  space:
-    "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-purple-950 to-black",
-  transparent: "bg-transparent",
+// Backgrounds en CSS direct (Tailwind v4 ne combine pas toujours bien
+// `bg-[radial-gradient(...)]` avec les utilitaires `from-*/via-*/to-*`).
+const TRAY_BG_STYLE: Record<DiceTrayBackground, React.CSSProperties> = {
+  felt: {
+    background:
+      "radial-gradient(ellipse at center, #047857 0%, #064e3b 60%, #022c22 100%)",
+  },
+  wood: {
+    background:
+      "radial-gradient(ellipse at center, #b45309 0%, #78350f 55%, #451a03 100%), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0 8px, transparent 8px 16px)",
+    backgroundBlendMode: "multiply",
+  },
+  stone: {
+    background:
+      "radial-gradient(ellipse at center, #64748b 0%, #334155 60%, #0f172a 100%)",
+  },
+  space: {
+    background:
+      "radial-gradient(ellipse at 30% 30%, #6366f1 0%, transparent 40%), radial-gradient(ellipse at 70% 60%, #c026d3 0%, transparent 40%), radial-gradient(ellipse at center, #1e1b4b 0%, #020617 100%)",
+  },
+  transparent: { background: "transparent" },
 }
 
 const MAX_VISIBLE_DICE = 12
@@ -36,8 +49,7 @@ interface DieView {
 function buildDiceView(
   isRolling: boolean,
   result: ReturnType<typeof useDiceStore.getState>["currentResult"],
-  selectedType: DiceType,
-  count: number,
+  groups: ReturnType<typeof useDiceStore.getState>["groups"],
 ): DieView[] {
   if (result && !isRolling) {
     return result.details.map((d) => ({
@@ -46,12 +58,14 @@ function buildDiceView(
       kept: d.kept,
     }))
   }
-  const previewValue = DICE_FACES[selectedType]
-  return Array.from({ length: count }, () => ({
-    type: selectedType,
-    value: previewValue,
-    kept: true,
-  }))
+  // Aplati les groupes de la preview en une liste de dés (un par dé à lancer)
+  return groups.flatMap((g) =>
+    Array.from({ length: g.count }, () => ({
+      type: g.type,
+      value: DICE_FACES[g.type],
+      kept: true,
+    })),
+  )
 }
 
 interface DiceTrayProps {
@@ -61,13 +75,12 @@ interface DiceTrayProps {
 export function DiceTray({ className }: DiceTrayProps) {
   const isRolling = useDiceStore((s) => s.isRolling)
   const result = useDiceStore((s) => s.currentResult)
-  const selectedType = useDiceStore((s) => s.selectedType)
-  const count = useDiceStore((s) => s.count)
+  const groups = useDiceStore((s) => s.groups)
   const trayBg = useSettingsStore((s) => s.trayBackground)
   const use3D = useSettingsStore((s) => s.use3D)
   const t = useTranslations("dice")
 
-  const dice = buildDiceView(isRolling, result, selectedType, count)
+  const dice = buildDiceView(isRolling, result, groups)
   const visible = dice.slice(0, MAX_VISIBLE_DICE)
   const overflow = Math.max(0, dice.length - MAX_VISIBLE_DICE)
 
@@ -93,9 +106,9 @@ export function DiceTray({ className }: DiceTrayProps) {
     <div
       className={cn(
         "relative flex aspect-[5/3] w-full items-center justify-center overflow-hidden rounded-2xl border shadow-inner",
-        TRAY_BG[trayBg],
         className,
       )}
+      style={TRAY_BG_STYLE[trayBg]}
     >
       <div
         className={cn(
