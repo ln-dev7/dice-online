@@ -73,7 +73,18 @@
     "helpHint": "Afficher l'aide sur la notation",
     "removeAll": "Tout retirer",
     "modifierHint": "Bonus ou malus fixe ajouté au total (ex: +5 modificateur de Force, -2 pénalité de couvert).",
-    "pool": "Sélection"
+    "pool": "Sélection",
+    "errors": {
+      "empty": "La notation est vide. Essaie 1d20+5.",
+      "invalidToken": "Impossible de lire « {token} ». Attends un groupe de dés (1d20) ou un nombre (+5).",
+      "noDice": "Ajoute au moins un groupe de dés, ex. 1d20 ou 2d6.",
+      "invalidGroup": "« {body} » n'est pas un groupe de dés valide. Format attendu : <nombre>d<faces>, ex. 2d6 ou 1d20.",
+      "countOutOfRange": "Le nombre de dés doit être entre 1 et {max}. Reçu : {count}.",
+      "unsupportedFaces": "d{faces} n'existe pas. Utilise un de : {valid}.",
+      "keepOutOfRange": "Tu ne peux pas garder/retirer {n} dés sur {max}.",
+      "negativeGroup": "Les groupes de dés négatifs ne sont pas supportés ({token}). Utilise plutôt un groupe positif avec un modificateur négatif, ex. 1d6-2.",
+      "unknown": "Notation invalide. Essaie 1d20+5 ou ouvre l'aide."
+    }
   },
   "history": {
     "title": "Historique",
@@ -124,7 +135,9 @@
     "add": "Ajouter",
     "play": "Lancer",
     "noPresets": "Aucun preset. Ajoute-en un avec le formulaire à gauche.",
-    "nameRequired": "Nom et notation requis"
+    "nameRequired": "Le nom est requis.",
+    "deleteConfirmTitle": "Supprimer ce preset ?",
+    "deleteConfirmBody": "« {name} » sera supprimé définitivement. Action irréversible."
   },
   "settings": {
     "title": "Paramètres",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "L'Appel de Cthulhu",
     "warhammer": "Warhammer 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "Personnalisé"
+    "custom": "Personnalisé",
+    "myPresets": "Mes presets"
   },
   "commandPalette": {
     "title": "Palette de commandes",

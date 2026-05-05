@@ -73,7 +73,18 @@
     "helpHint": "查看公式说明",
     "removeAll": "全部移除",
     "modifierHint": "加到总和的固定加值或减值(例:+5 属性加值,-2 掩护减值)。",
-    "pool": "选择"
+    "pool": "选择",
+    "errors": {
+      "empty": "公式为空。试试 1d20+5。",
+      "invalidToken": "无法识别 \"{token}\"。期望:骰子组(1d20)或数字(+5)。",
+      "noDice": "至少添加一个骰子组,例如 1d20 或 2d6。",
+      "invalidGroup": "\"{body}\" 不是有效的骰子组。格式:<数量>d<面数>,如 2d6 或 1d20。",
+      "countOutOfRange": "骰子数量必须在 1 到 {max} 之间。收到:{count}。",
+      "unsupportedFaces": "d{faces} 不存在。可用:{valid}。",
+      "keepOutOfRange": "无法在 {max} 个中保留/舍弃 {n} 个。",
+      "negativeGroup": "不支持负数骰子组({token})。请使用正数骰子组配负修正,如 1d6-2。",
+      "unknown": "公式无效。试试 1d20+5 或打开帮助。"
+    }
   },
   "history": {
     "title": "历史",
@@ -124,7 +135,9 @@
     "add": "添加",
     "play": "投掷",
     "noPresets": "还没有预设。请使用左侧表单添加。",
-    "nameRequired": "名称和公式必填"
+    "nameRequired": "名称必填。",
+    "deleteConfirmTitle": "删除此预设?",
+    "deleteConfirmBody": "\"{name}\" 将被永久删除,无法撤销。"
   },
   "settings": {
     "title": "设置",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "克苏鲁的呼唤",
     "warhammer": "战锤 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "自定义"
+    "custom": "自定义",
+    "myPresets": "我的预设"
   },
   "commandPalette": {
     "title": "命令面板",

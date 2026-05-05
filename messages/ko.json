@@ -73,7 +73,18 @@
     "helpHint": "표기법 도움말",
     "removeAll": "모두 제거",
     "modifierHint": "합계에 더하는 고정 보정값 (예: +5 능력 보정, -2 엄폐 페널티).",
-    "pool": "선택"
+    "pool": "선택",
+    "errors": {
+      "empty": "표기가 비어 있습니다. 예: 1d20+5.",
+      "invalidToken": "\"{token}\"을(를) 해석할 수 없습니다. 주사위(1d20) 또는 숫자(+5)가 필요합니다.",
+      "noDice": "주사위 그룹을 하나 이상 추가하세요. 예: 1d20 또는 2d6.",
+      "invalidGroup": "\"{body}\"은(는) 유효한 그룹이 아닙니다. 형식: <개수>d<면>, 예: 2d6 또는 1d20.",
+      "countOutOfRange": "주사위 개수는 1~{max} 사이여야 합니다. 입력: {count}.",
+      "unsupportedFaces": "d{faces}은(는) 존재하지 않습니다. 사용 가능: {valid}.",
+      "keepOutOfRange": "{max}개 중 {n}개를 유지/제거할 수 없습니다.",
+      "negativeGroup": "음수 주사위 그룹은 지원되지 않습니다 ({token}). 양수 그룹과 음수 보정값을 사용하세요. 예: 1d6-2.",
+      "unknown": "표기가 잘못되었습니다. 1d20+5 또는 도움말을 열어 보세요."
+    }
   },
   "history": {
     "title": "기록",
@@ -124,7 +135,9 @@
     "add": "추가",
     "play": "굴리기",
     "noPresets": "프리셋이 없습니다. 왼쪽 폼으로 추가하세요.",
-    "nameRequired": "이름과 표기는 필수입니다"
+    "nameRequired": "이름은 필수입니다.",
+    "deleteConfirmTitle": "이 프리셋을 삭제할까요?",
+    "deleteConfirmBody": "\"{name}\"이(가) 영구 삭제됩니다. 되돌릴 수 없습니다."
   },
   "settings": {
     "title": "설정",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "크툴루의 부름",
     "warhammer": "워해머 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "커스텀"
+    "custom": "커스텀",
+    "myPresets": "내 프리셋"
   },
   "commandPalette": {
     "title": "명령 팔레트",

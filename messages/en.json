@@ -73,7 +73,18 @@
     "helpHint": "Show notation help",
     "removeAll": "Remove all",
     "modifierHint": "Flat bonus or malus added to the total (e.g. +5 ability modifier, -2 cover penalty).",
-    "pool": "Pool"
+    "pool": "Pool",
+    "errors": {
+      "empty": "Notation is empty. Try something like 1d20+5.",
+      "invalidToken": "Cannot read \"{token}\". Expected a dice group (1d20) or a number (+5).",
+      "noDice": "Add at least one dice group, e.g. 1d20 or 2d6.",
+      "invalidGroup": "\"{body}\" is not a valid dice group. Expected format: <count>d<faces>, like 2d6 or 1d20.",
+      "countOutOfRange": "Dice count must be between 1 and {max}. Got {count}.",
+      "unsupportedFaces": "d{faces} doesn't exist. Use one of: {valid}.",
+      "keepOutOfRange": "You can't keep/drop {n} dice out of {max}.",
+      "negativeGroup": "Negative dice groups are not supported ({token}). Use a positive group with a negative modifier instead, like 1d6-2.",
+      "unknown": "Notation is invalid. Try 1d20+5 or open the help."
+    }
   },
   "history": {
     "title": "History",
@@ -124,7 +135,9 @@
     "add": "Add",
     "play": "Play",
     "noPresets": "No presets yet. Add one with the form on the left.",
-    "nameRequired": "Name and notation are required"
+    "nameRequired": "Name is required.",
+    "deleteConfirmTitle": "Delete this preset?",
+    "deleteConfirmBody": "\"{name}\" will be removed permanently. This cannot be undone."
   },
   "settings": {
     "title": "Settings",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "Call of Cthulhu",
     "warhammer": "Warhammer 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "Custom"
+    "custom": "Custom",
+    "myPresets": "My presets"
   },
   "commandPalette": {
     "title": "Command palette",

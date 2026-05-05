@@ -73,7 +73,18 @@
     "helpHint": "تعليمات الصيغة",
     "removeAll": "إزالة الكل",
     "modifierHint": "معدِّل ثابت يُضاف إلى الإجمالي (مثال: +5 معدِّل قدرة، -2 غطاء).",
-    "pool": "الاختيار"
+    "pool": "الاختيار",
+    "errors": {
+      "empty": "الصيغة فارغة. جرّب 1d20+5.",
+      "invalidToken": "لا يمكن قراءة «{token}». يُتوقّع مجموعة نرد (1d20) أو رقم (+5).",
+      "noDice": "أضف مجموعة نرد واحدة على الأقل، مثل 1d20 أو 2d6.",
+      "invalidGroup": "«{body}» ليست مجموعة صالحة. التنسيق: <عدد>d<أوجه>، مثل 2d6 أو 1d20.",
+      "countOutOfRange": "عدد النرد يجب أن يكون بين 1 و {max}. الوارد: {count}.",
+      "unsupportedFaces": "d{faces} غير موجود. الأوجه الصالحة: {valid}.",
+      "keepOutOfRange": "لا يمكن الاحتفاظ بـ/استبعاد {n} نردات من {max}.",
+      "negativeGroup": "المجموعات السالبة غير مدعومة ({token}). استخدم مجموعة موجبة مع معدِّل سالب، مثل 1d6-2.",
+      "unknown": "الصيغة غير صحيحة. جرّب 1d20+5 أو افتح المساعدة."
+    }
   },
   "history": {
     "title": "السجل",
@@ -124,7 +135,9 @@
     "add": "إضافة",
     "play": "ارمِ",
     "noPresets": "لا إعدادات مسبقة. أضف واحدًا من النموذج.",
-    "nameRequired": "الاسم والصيغة مطلوبان"
+    "nameRequired": "الاسم مطلوب.",
+    "deleteConfirmTitle": "حذف هذا الإعداد المسبق؟",
+    "deleteConfirmBody": "سيُحذف «{name}» نهائيًا. لا يمكن التراجع."
   },
   "settings": {
     "title": "الإعدادات",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "نداء كثولو",
     "warhammer": "Warhammer 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "مخصص"
+    "custom": "مخصص",
+    "myPresets": "إعداداتي المسبقة"
   },
   "commandPalette": {
     "title": "لوحة الأوامر",

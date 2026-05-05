@@ -73,7 +73,18 @@
     "helpHint": "Notations-Hilfe öffnen",
     "removeAll": "Alle entfernen",
     "modifierHint": "Fester Bonus/Malus zum Gesamtwert (z. B. +5 Attributsmodifikator, -2 Deckungsmalus).",
-    "pool": "Auswahl"
+    "pool": "Auswahl",
+    "errors": {
+      "empty": "Notation ist leer. Versuche 1d20+5.",
+      "invalidToken": "Kann „{token}\" nicht lesen. Erwartet: Würfelgruppe (1d20) oder Zahl (+5).",
+      "noDice": "Füge mindestens eine Würfelgruppe hinzu, z. B. 1d20 oder 2d6.",
+      "invalidGroup": "„{body}\" ist keine gültige Würfelgruppe. Format: <Anzahl>d<Seiten>, z. B. 2d6 oder 1d20.",
+      "countOutOfRange": "Die Würfelzahl muss zwischen 1 und {max} liegen. Erhalten: {count}.",
+      "unsupportedFaces": "d{faces} existiert nicht. Verwende: {valid}.",
+      "keepOutOfRange": "Du kannst nicht {n} von {max} Würfeln behalten/verwerfen.",
+      "negativeGroup": "Negative Würfelgruppen werden nicht unterstützt ({token}). Nutze positive Gruppen mit negativem Modifikator, z. B. 1d6-2.",
+      "unknown": "Notation ungültig. Versuche 1d20+5 oder öffne die Hilfe."
+    }
   },
   "history": {
     "title": "Verlauf",
@@ -124,7 +135,9 @@
     "add": "Hinzufügen",
     "play": "Würfeln",
     "noPresets": "Noch keine Presets. Lege eines mit dem Formular an.",
-    "nameRequired": "Name und Notation erforderlich"
+    "nameRequired": "Name erforderlich.",
+    "deleteConfirmTitle": "Dieses Preset löschen?",
+    "deleteConfirmBody": "„{name}\" wird unwiderruflich entfernt."
   },
   "settings": {
     "title": "Einstellungen",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "Cthulhu",
     "warhammer": "Warhammer 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "Benutzerdefiniert"
+    "custom": "Benutzerdefiniert",
+    "myPresets": "Meine Presets"
   },
   "commandPalette": {
     "title": "Befehlspalette",

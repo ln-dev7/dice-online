@@ -73,7 +73,18 @@
     "helpHint": "表記ヘルプを開く",
     "removeAll": "すべて削除",
     "modifierHint": "合計に加える固定の修正値(例:+5 能力修正、-2 遮蔽ペナルティ)。",
-    "pool": "選択"
+    "pool": "選択",
+    "errors": {
+      "empty": "表記が空です。例:1d20+5。",
+      "invalidToken": "「{token}」を解釈できません。ダイス(1d20)または数(+5)を期待しています。",
+      "noDice": "ダイスのグループを少なくとも 1 つ追加してください(例:1d20 や 2d6)。",
+      "invalidGroup": "「{body}」は有効なダイスグループではありません。形式:<数>d<面>(例:2d6、1d20)。",
+      "countOutOfRange": "ダイス数は 1〜{max} の範囲です。受信値:{count}。",
+      "unsupportedFaces": "d{faces} は存在しません。使用可能:{valid}。",
+      "keepOutOfRange": "{max} 個から {n} 個を残す/捨てることはできません。",
+      "negativeGroup": "負のダイスグループは未対応です({token})。代わりに正のグループ + 負の修正値を使ってください(例:1d6-2)。",
+      "unknown": "表記が無効です。1d20+5 を試すか、ヘルプを開いてください。"
+    }
   },
   "history": {
     "title": "履歴",
@@ -124,7 +135,9 @@
     "add": "追加",
     "play": "振る",
     "noPresets": "プリセットがありません。左のフォームから追加してください。",
-    "nameRequired": "名前と表記が必要です"
+    "nameRequired": "名前は必須です。",
+    "deleteConfirmTitle": "このプリセットを削除しますか?",
+    "deleteConfirmBody": "「{name}」は完全に削除されます。元に戻せません。"
   },
   "settings": {
     "title": "設定",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "クトゥルフ神話TRPG",
     "warhammer": "ウォーハンマー 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "カスタム"
+    "custom": "カスタム",
+    "myPresets": "マイプリセット"
   },
   "commandPalette": {
     "title": "コマンドパレット",

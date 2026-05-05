@@ -73,7 +73,18 @@
     "helpHint": "Mostrar ayuda de notación",
     "removeAll": "Quitar todo",
     "modifierHint": "Bonificador/penalizador fijo añadido al total (ej. +5 modificador de habilidad, -2 cobertura).",
-    "pool": "Selección"
+    "pool": "Selección",
+    "errors": {
+      "empty": "La notación está vacía. Prueba con 1d20+5.",
+      "invalidToken": "No puedo leer «{token}». Esperaba un grupo de dados (1d20) o un número (+5).",
+      "noDice": "Añade al menos un grupo de dados, ej. 1d20 o 2d6.",
+      "invalidGroup": "«{body}» no es un grupo válido. Formato: <número>d<caras>, ej. 2d6 o 1d20.",
+      "countOutOfRange": "El número de dados debe estar entre 1 y {max}. Recibido: {count}.",
+      "unsupportedFaces": "d{faces} no existe. Usa uno de: {valid}.",
+      "keepOutOfRange": "No puedes conservar/descartar {n} dados de {max}.",
+      "negativeGroup": "No se admiten grupos negativos ({token}). Usa un grupo positivo con modificador negativo, ej. 1d6-2.",
+      "unknown": "Notación inválida. Prueba 1d20+5 o abre la ayuda."
+    }
   },
   "history": {
     "title": "Historial",
@@ -124,7 +135,9 @@
     "add": "Añadir",
     "play": "Tirar",
     "noPresets": "Aún no hay presets. Añade uno con el formulario.",
-    "nameRequired": "Nombre y notación obligatorios"
+    "nameRequired": "El nombre es obligatorio.",
+    "deleteConfirmTitle": "¿Eliminar este preset?",
+    "deleteConfirmBody": "«{name}» será eliminado permanentemente. Acción irreversible."
   },
   "settings": {
     "title": "Ajustes",
@@ -195,7 +208,8 @@
     "callOfCthulhu": "La Llamada de Cthulhu",
     "warhammer": "Warhammer 40k / AoS",
     "savageWorlds": "Savage Worlds",
-    "custom": "Personalizado"
+    "custom": "Personalizado",
+    "myPresets": "Mis presets"
   },
   "commandPalette": {
     "title": "Paleta de comandos",
