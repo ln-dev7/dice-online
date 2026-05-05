@@ -71,13 +71,13 @@ export function DiceTray({ className }: DiceTrayProps) {
   const visible = dice.slice(0, MAX_VISIBLE_DICE)
   const overflow = Math.max(0, dice.length - MAX_VISIBLE_DICE)
 
-  // 3D fonctionne bien pour d4 (tétraèdre, faces visibles) et d6 (cube avec textures
-  // peintes par face). Pour les autres polyèdres (d8, d10, d12, d20), peindre des
-  // numéros lisibles sur chaque face est trop complexe → on retombe en 2D.
+  // Seul le d6 (cube avec textures peintes par face) bénéficie d'un rendu 3D
+  // satisfaisant. Tous les autres dés retombent en 2D pour garantir des numéros
+  // lisibles sur chaque face.
   const SUPPORTS_3D: Record<DiceType, boolean> = {
-    d2: true,
+    d2: false,
     d3: false,
-    d4: true,
+    d4: false,
     d6: true,
     d8: false,
     d10: false,
