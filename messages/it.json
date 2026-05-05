@@ -146,7 +146,19 @@
     "themeLight": "Chiaro",
     "themeDark": "Scuro",
     "themeToggleLight": "Modalità chiara",
-    "themeToggleDark": "Modalità scura"
+    "themeToggleDark": "Modalità scura",
+    "data": "Dati",
+    "resetDefaults": "Ripristina predefiniti",
+    "resetDefaultsHint": "Ripristina tutte le preferenze (tema, audio, aspetto dei dadi) ai valori iniziali. Cronologia e preset sono conservati.",
+    "resetDefaultsConfirmTitle": "Ripristinare i valori predefiniti?",
+    "resetDefaultsConfirmBody": "Colore, materiale, audio, vibrazione e 3D verranno ripristinati.",
+    "resetDefaultsConfirmAction": "Ripristina",
+    "clearData": "Elimina tutti i dati locali",
+    "clearDataHint": "Rimuove preferenze, cronologia e preset da questo browser. Irreversibile.",
+    "clearDataConfirmTitle": "Eliminare tutti i dati locali?",
+    "clearDataConfirmBody": "Verranno cancellate impostazioni, cronologia e preset in questo browser. Irreversibile.",
+    "clearDataConfirmAction": "Elimina tutto",
+    "doneToast": "Fatto"
   },
   "materials": {
     "plastic": "Plastica",

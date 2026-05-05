@@ -146,7 +146,19 @@
     "themeLight": "लाइट",
     "themeDark": "डार्क",
     "themeToggleLight": "लाइट मोड पर जाएँ",
-    "themeToggleDark": "डार्क मोड पर जाएँ"
+    "themeToggleDark": "डार्क मोड पर जाएँ",
+    "data": "डेटा",
+    "resetDefaults": "डिफ़ॉल्ट पुनर्स्थापित करें",
+    "resetDefaultsHint": "सभी प्राथमिकताएँ (थीम, ध्वनि, पासे का रूप) प्रारंभिक मानों पर रीसेट करें। इतिहास और प्रीसेट बने रहते हैं।",
+    "resetDefaultsConfirmTitle": "डिफ़ॉल्ट पुनर्स्थापित करें?",
+    "resetDefaultsConfirmBody": "रंग, सामग्री, ध्वनि, कंपन और 3D रीसेट हो जाएँगे।",
+    "resetDefaultsConfirmAction": "पुनर्स्थापित करें",
+    "clearData": "सभी स्थानीय डेटा मिटाएँ",
+    "clearDataHint": "इस ब्राउज़र से सभी प्राथमिकताएँ, इतिहास और प्रीसेट हटाएँ। पूर्ववत नहीं हो सकता।",
+    "clearDataConfirmTitle": "सभी स्थानीय डेटा मिटाएँ?",
+    "clearDataConfirmBody": "इस ब्राउज़र से सेटिंग्स, इतिहास और प्रीसेट मिट जाएँगे। पूर्ववत नहीं।",
+    "clearDataConfirmAction": "सब मिटाएँ",
+    "doneToast": "हो गया"
   },
   "materials": {
     "plastic": "प्लास्टिक",

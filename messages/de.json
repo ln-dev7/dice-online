@@ -146,7 +146,19 @@
     "themeLight": "Hell",
     "themeDark": "Dunkel",
     "themeToggleLight": "Hellen Modus aktivieren",
-    "themeToggleDark": "Dunklen Modus aktivieren"
+    "themeToggleDark": "Dunklen Modus aktivieren",
+    "data": "Daten",
+    "resetDefaults": "Standardwerte wiederherstellen",
+    "resetDefaultsHint": "Setzt alle Einstellungen (Thema, Sound, Würfel-Aussehen) auf die Anfangswerte zurück. Verlauf und Presets bleiben erhalten.",
+    "resetDefaultsConfirmTitle": "Standardwerte wiederherstellen?",
+    "resetDefaultsConfirmBody": "Deine Farb-, Material-, Sound-, Vibrations- und 3D-Einstellungen werden zurückgesetzt.",
+    "resetDefaultsConfirmAction": "Wiederherstellen",
+    "clearData": "Alle lokalen Daten löschen",
+    "clearDataHint": "Entfernt alle Einstellungen, den Verlauf und gespeicherte Presets aus diesem Browser. Nicht umkehrbar.",
+    "clearDataConfirmTitle": "Alle lokalen Daten löschen?",
+    "clearDataConfirmBody": "Damit werden deine Einstellungen, Verlauf und Presets in diesem Browser gelöscht. Nicht umkehrbar.",
+    "clearDataConfirmAction": "Alles löschen",
+    "doneToast": "Fertig"
   },
   "materials": {
     "plastic": "Plastik",

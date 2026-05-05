@@ -146,7 +146,19 @@
     "themeLight": "Светлая",
     "themeDark": "Тёмная",
     "themeToggleLight": "Светлая тема",
-    "themeToggleDark": "Тёмная тема"
+    "themeToggleDark": "Тёмная тема",
+    "data": "Данные",
+    "resetDefaults": "Восстановить по умолчанию",
+    "resetDefaultsHint": "Сбрасывает настройки (тема, звук, вид кубиков) к исходным значениям. История и пресеты сохраняются.",
+    "resetDefaultsConfirmTitle": "Восстановить настройки по умолчанию?",
+    "resetDefaultsConfirmBody": "Цвет, материал, звук, вибрация и 3D будут сброшены.",
+    "resetDefaultsConfirmAction": "Восстановить",
+    "clearData": "Удалить все локальные данные",
+    "clearDataHint": "Удаляет настройки, историю и пресеты в этом браузере. Необратимо.",
+    "clearDataConfirmTitle": "Удалить все локальные данные?",
+    "clearDataConfirmBody": "Будут стерты настройки, история и пресеты в этом браузере. Необратимо.",
+    "clearDataConfirmAction": "Удалить всё",
+    "doneToast": "Готово"
   },
   "materials": {
     "plastic": "Пластик",

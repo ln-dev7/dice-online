@@ -146,7 +146,19 @@
     "themeLight": "ライト",
     "themeDark": "ダーク",
     "themeToggleLight": "ライトモードに切替",
-    "themeToggleDark": "ダークモードに切替"
+    "themeToggleDark": "ダークモードに切替",
+    "data": "データ",
+    "resetDefaults": "既定値に戻す",
+    "resetDefaultsHint": "すべての設定(テーマ、音、ダイス外観)を初期値にリセットします。履歴とプリセットは保持されます。",
+    "resetDefaultsConfirmTitle": "既定値に戻しますか?",
+    "resetDefaultsConfirmBody": "色・素材・音・振動・3D の設定がリセットされます。",
+    "resetDefaultsConfirmAction": "戻す",
+    "clearData": "すべてのローカルデータを削除",
+    "clearDataHint": "このブラウザの全設定、履歴、プリセットを削除します。元に戻せません。",
+    "clearDataConfirmTitle": "すべてのローカルデータを削除しますか?",
+    "clearDataConfirmBody": "このブラウザの設定、履歴、プリセットがすべて消去されます。元に戻せません。",
+    "clearDataConfirmAction": "すべて削除",
+    "doneToast": "完了"
   },
   "materials": {
     "plastic": "プラスチック",

@@ -146,7 +146,19 @@
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeToggleLight": "Activar modo claro",
-    "themeToggleDark": "Activar modo oscuro"
+    "themeToggleDark": "Activar modo oscuro",
+    "data": "Datos",
+    "resetDefaults": "Restaurar valores por defecto",
+    "resetDefaultsHint": "Restablece las preferencias (tema, sonido, apariencia) a sus valores iniciales. El historial y los presets se conservan.",
+    "resetDefaultsConfirmTitle": "¿Restaurar valores por defecto?",
+    "resetDefaultsConfirmBody": "Tus preferencias de color, material, sonido, vibración y 3D se reiniciarán.",
+    "resetDefaultsConfirmAction": "Restaurar",
+    "clearData": "Borrar todos los datos locales",
+    "clearDataHint": "Elimina preferencias, historial y presets de este navegador. Acción irreversible.",
+    "clearDataConfirmTitle": "¿Borrar todos los datos locales?",
+    "clearDataConfirmBody": "Se borrarán tus ajustes, historial y presets de este navegador. Irreversible.",
+    "clearDataConfirmAction": "Borrar todo",
+    "doneToast": "Hecho"
   },
   "materials": {
     "plastic": "Plástico",

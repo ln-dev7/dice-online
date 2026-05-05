@@ -146,7 +146,19 @@
     "themeLight": "明亮",
     "themeDark": "暗色",
     "themeToggleLight": "切换到明亮模式",
-    "themeToggleDark": "切换到暗色模式"
+    "themeToggleDark": "切换到暗色模式",
+    "data": "数据",
+    "resetDefaults": "恢复默认设置",
+    "resetDefaultsHint": "将所有偏好(主题、声音、骰子外观)重置为初始值。历史和预设保留。",
+    "resetDefaultsConfirmTitle": "恢复默认设置?",
+    "resetDefaultsConfirmBody": "颜色、材质、声音、振动和 3D 偏好将被重置。",
+    "resetDefaultsConfirmAction": "恢复",
+    "clearData": "删除所有本地数据",
+    "clearDataHint": "删除此浏览器中的全部偏好、历史和预设。无法撤销。",
+    "clearDataConfirmTitle": "删除所有本地数据?",
+    "clearDataConfirmBody": "将清除此浏览器中的设置、历史和预设。无法撤销。",
+    "clearDataConfirmAction": "全部删除",
+    "doneToast": "完成"
   },
   "materials": {
     "plastic": "塑料",

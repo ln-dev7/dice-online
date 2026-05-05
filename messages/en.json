@@ -146,7 +146,19 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeToggleLight": "Switch to light mode",
-    "themeToggleDark": "Switch to dark mode"
+    "themeToggleDark": "Switch to dark mode",
+    "data": "Data",
+    "resetDefaults": "Restore defaults",
+    "resetDefaultsHint": "Reset all preferences (theme, sound, dice appearance) to their initial values. Your history and presets are kept.",
+    "resetDefaultsConfirmTitle": "Restore default settings?",
+    "resetDefaultsConfirmBody": "Your color, material, sound, vibration and 3D preferences will be reset.",
+    "resetDefaultsConfirmAction": "Restore",
+    "clearData": "Delete all local data",
+    "clearDataHint": "Remove every preference, the rolls history and saved presets from this browser. Cannot be undone.",
+    "clearDataConfirmTitle": "Delete all local data?",
+    "clearDataConfirmBody": "This will erase your settings, history and presets stored in this browser. This cannot be undone.",
+    "clearDataConfirmAction": "Delete everything",
+    "doneToast": "Done"
   },
   "materials": {
     "plastic": "Plastic",

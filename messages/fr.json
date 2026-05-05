@@ -146,7 +146,19 @@
     "themeLight": "Clair",
     "themeDark": "Sombre",
     "themeToggleLight": "Activer le mode clair",
-    "themeToggleDark": "Activer le mode sombre"
+    "themeToggleDark": "Activer le mode sombre",
+    "data": "Données",
+    "resetDefaults": "Restaurer les paramètres par défaut",
+    "resetDefaultsHint": "Réinitialise toutes les préférences (thème, son, apparence des dés) aux valeurs d'origine. L'historique et les presets sont conservés.",
+    "resetDefaultsConfirmTitle": "Restaurer les paramètres par défaut ?",
+    "resetDefaultsConfirmBody": "Tes préférences de couleur, matériau, son, vibration et 3D seront réinitialisées.",
+    "resetDefaultsConfirmAction": "Restaurer",
+    "clearData": "Supprimer toutes les données locales",
+    "clearDataHint": "Supprime toutes les préférences, l'historique des lancers et les presets enregistrés dans ce navigateur. Action irréversible.",
+    "clearDataConfirmTitle": "Supprimer toutes les données locales ?",
+    "clearDataConfirmBody": "Cette action efface tes paramètres, l'historique et les presets stockés dans ce navigateur. Irréversible.",
+    "clearDataConfirmAction": "Tout supprimer",
+    "doneToast": "Fait"
   },
   "materials": {
     "plastic": "Plastique",

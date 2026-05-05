@@ -146,7 +146,19 @@
     "themeLight": "라이트",
     "themeDark": "다크",
     "themeToggleLight": "라이트 모드로 전환",
-    "themeToggleDark": "다크 모드로 전환"
+    "themeToggleDark": "다크 모드로 전환",
+    "data": "데이터",
+    "resetDefaults": "기본값 복원",
+    "resetDefaultsHint": "모든 환경설정(테마, 사운드, 외관)을 초기값으로 되돌립니다. 기록과 프리셋은 유지됩니다.",
+    "resetDefaultsConfirmTitle": "기본값으로 복원할까요?",
+    "resetDefaultsConfirmBody": "색상·재질·사운드·진동·3D 설정이 초기화됩니다.",
+    "resetDefaultsConfirmAction": "복원",
+    "clearData": "모든 로컬 데이터 삭제",
+    "clearDataHint": "이 브라우저의 환경설정, 기록, 프리셋을 모두 제거합니다. 되돌릴 수 없습니다.",
+    "clearDataConfirmTitle": "모든 로컬 데이터를 삭제할까요?",
+    "clearDataConfirmBody": "이 브라우저의 설정·기록·프리셋이 모두 삭제됩니다. 되돌릴 수 없습니다.",
+    "clearDataConfirmAction": "모두 삭제",
+    "doneToast": "완료"
   },
   "materials": {
     "plastic": "플라스틱",

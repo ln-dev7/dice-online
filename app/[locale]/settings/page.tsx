@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server"
 import { AppShell } from "@/components/layout/AppShell"
 import { SoundSettings } from "@/components/settings/SoundSettings"
 import { DiceCustomizer } from "@/components/settings/DiceCustomizer"
+import { DataManagement } from "@/components/settings/DataManagement"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Lock } from "lucide-react"
@@ -52,6 +53,8 @@ export default async function SettingsPage({
             </p>
           </CardContent>
         </Card>
+
+        <DataManagement />
       </div>
     </AppShell>
   )

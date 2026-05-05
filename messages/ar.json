@@ -146,7 +146,19 @@
     "themeLight": "فاتح",
     "themeDark": "داكن",
     "themeToggleLight": "تفعيل الوضع الفاتح",
-    "themeToggleDark": "تفعيل الوضع الداكن"
+    "themeToggleDark": "تفعيل الوضع الداكن",
+    "data": "البيانات",
+    "resetDefaults": "إعادة الإعدادات الافتراضية",
+    "resetDefaultsHint": "يعيد جميع التفضيلات (السمة، الصوت، شكل النرد) إلى قيمها الأولية. يُحتفظ بالسجل والإعدادات المسبقة.",
+    "resetDefaultsConfirmTitle": "إعادة الإعدادات الافتراضية؟",
+    "resetDefaultsConfirmBody": "ستُعاد إعدادات اللون والخامة والصوت والاهتزاز و3D.",
+    "resetDefaultsConfirmAction": "إعادة",
+    "clearData": "حذف كل البيانات المحلية",
+    "clearDataHint": "يحذف جميع التفضيلات والسجل والإعدادات المسبقة من هذا المتصفح. لا يمكن التراجع.",
+    "clearDataConfirmTitle": "حذف كل البيانات المحلية؟",
+    "clearDataConfirmBody": "ستُمحى الإعدادات والسجل والإعدادات المسبقة في هذا المتصفح. لا يمكن التراجع.",
+    "clearDataConfirmAction": "حذف الكل",
+    "doneToast": "تم"
   },
   "materials": {
     "plastic": "بلاستيك",
