@@ -162,16 +162,24 @@ export function Dice2D({ type, spinning, value, className, size = 80 }: Dice2DPr
       aria-label={`${type} ${value ?? ""}`}
       role="img"
     >
-      <span
-        className={cn(
-          "pointer-events-none font-mono font-bold tabular-nums leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.45)]",
-          type === "d4" && "translate-y-[15%]",
-          type === "d8" && "-rotate-45",
-        )}
-        style={{ fontSize }}
-      >
-        {display}
-      </span>
+      {/* Pendant la rotation on cache la face — comme un vrai dé en l'air */}
+      {!spinning && (
+        <span
+          className={cn(
+            "pointer-events-none font-mono font-bold tabular-nums leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.45)]",
+            // Les triangles (d3, d4) ont leur centre visuel sous le centre
+            // géométrique : on descend le texte d'environ un sixième.
+            (type === "d3" || type === "d4") && "translate-y-[15%]",
+            // Le kite du d10 a sa partie large au-dessus du milieu
+            type === "d10" && "translate-y-[-6%]",
+            // d8 est rendu en rotate-45, donc on contre-rotate le texte
+            type === "d8" && "-rotate-45",
+          )}
+          style={{ fontSize }}
+        >
+          {display}
+        </span>
+      )}
     </motion.div>
   )
 }
