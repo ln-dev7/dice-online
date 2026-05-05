@@ -22,10 +22,12 @@ interface KeyboardOptions {
   onOpenCommandPalette?: () => void
 }
 
+// Les +/- et 1-9 ciblent le PREMIER groupe de dés (le plus courant en JDR :
+// un seul groupe). Pour les multi-groupes, l'utilisateur passera par la souris.
 export function useKeyboard(options: KeyboardOptions = {}) {
-  const setSelectedType = useDiceStore((s) => s.setSelectedType)
-  const setCount = useDiceStore((s) => s.setCount)
-  const count = useDiceStore((s) => s.count)
+  const groups = useDiceStore((s) => s.groups)
+  const updateGroupType = useDiceStore((s) => s.updateGroupType)
+  const updateGroupCount = useDiceStore((s) => s.updateGroupCount)
   const reset = useDiceStore((s) => s.reset)
   const { roll } = useDiceRoll()
 
@@ -33,7 +35,6 @@ export function useKeyboard(options: KeyboardOptions = {}) {
     function onKey(e: KeyboardEvent) {
       if (isTyping(e.target)) return
 
-      // Cmd/Ctrl + K — palette
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault()
         options.onOpenCommandPalette?.()
@@ -41,6 +42,8 @@ export function useKeyboard(options: KeyboardOptions = {}) {
       }
 
       if (e.metaKey || e.ctrlKey || e.altKey) return
+
+      const firstGroup = groups[0]
 
       switch (e.key) {
         case " ":
@@ -67,29 +70,32 @@ export function useKeyboard(options: KeyboardOptions = {}) {
           options.onOpenHelp?.()
           return
         case "+":
-          e.preventDefault()
-          setCount(count + 1)
+          if (firstGroup) {
+            e.preventDefault()
+            updateGroupCount(firstGroup.id, firstGroup.count + 1)
+          }
           return
         case "-":
-          e.preventDefault()
-          setCount(count - 1)
+          if (firstGroup) {
+            e.preventDefault()
+            updateGroupCount(firstGroup.id, firstGroup.count - 1)
+          }
           return
         default:
           break
       }
 
-      // Touches 1-9 = sélection rapide d'un type de dé
       const num = Number.parseInt(e.key, 10)
-      if (!Number.isNaN(num) && num >= 1 && num <= 9) {
+      if (!Number.isNaN(num) && num >= 1 && num <= 9 && firstGroup) {
         const type: DiceType | undefined = DICE_TYPES[num - 1]
         if (type) {
           e.preventDefault()
-          setSelectedType(type)
+          updateGroupType(firstGroup.id, type)
         }
       }
     }
 
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [count, reset, roll, setCount, setSelectedType, options])
+  }, [groups, reset, roll, updateGroupCount, updateGroupType, options])
 }

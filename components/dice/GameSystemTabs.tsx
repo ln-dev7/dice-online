@@ -6,7 +6,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { GAME_SYSTEMS } from "@/lib/gameSystems"
+import { parseNotation } from "@/lib/diceParser"
 import { useDiceRoll } from "@/hooks/useDiceRoll"
+import { useDiceStore } from "@/store/diceStore"
 import type { GameSystemId } from "@/types/gameSystem"
 
 const SYSTEM_LABEL_KEY: Record<GameSystemId, string> = {
@@ -18,10 +20,38 @@ const SYSTEM_LABEL_KEY: Record<GameSystemId, string> = {
   custom: "custom",
 }
 
+function generateId() {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID()
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
+
 export function GameSystemTabs() {
   const [system, setSystem] = useState<GameSystemId>("dnd5e")
   const { roll } = useDiceRoll()
+  const setGroups = useDiceStore((s) => s.setGroups)
+  const setModifier = useDiceStore((s) => s.setModifier)
   const t = useTranslations("gameSystems")
+
+  // Sync la preview avec la notation cliquée AVANT de lancer.
+  // L'utilisateur voit donc immédiatement le bon nombre/type de dés dans le tray.
+  const quickRoll = (notation: string, label: string) => {
+    try {
+      const parsed = parseNotation(notation)
+      const groups = parsed.groups.map((g) => ({
+        id: generateId(),
+        type: g.type,
+        count: g.count,
+      }))
+      if (groups.length > 0) {
+        setGroups(groups)
+        setModifier(parsed.modifier)
+      }
+    } catch {
+      // Si la notation est non-standard (kh/dl/!), on laisse roll faire son travail
+      // sans toucher à la preview — c'est mieux que de planter.
+    }
+    void roll({ notation, label, mode: "normal" })
+  }
 
   return (
     <section aria-labelledby="game-systems">
@@ -51,7 +81,7 @@ export function GameSystemTabs() {
                       key={q.label}
                       size="sm"
                       variant="secondary"
-                      onClick={() => roll({ notation: q.notation, label: q.label })}
+                      onClick={() => quickRoll(q.notation, q.label)}
                       title={q.description}
                     >
                       <span>{q.label}</span>
