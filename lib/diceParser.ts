@@ -3,25 +3,41 @@ import { DICE_FACES } from "@/types/dice"
 
 const VALID_FACES = new Set(Object.values(DICE_FACES))
 
+export type NotationErrorCode =
+  | "empty"
+  | "invalidToken"
+  | "noDice"
+  | "invalidGroup"
+  | "countOutOfRange"
+  | "unsupportedFaces"
+  | "keepOutOfRange"
+  | "negativeGroup"
+
 export class NotationError extends Error {
-  constructor(message: string) {
+  readonly code: NotationErrorCode
+  readonly context: Record<string, string | number>
+
+  constructor(
+    code: NotationErrorCode,
+    message: string,
+    context: Record<string, string | number> = {},
+  ) {
     super(message)
     this.name = "NotationError"
+    this.code = code
+    this.context = context
   }
 }
 
-// Parse une notation type "2d6+3", "4d6kh3", "1d20!", "4d6dl1+2"
-// Format général : <count>d<faces>[k(h|l)N|d(h|l)N][!] (+|-) <count>d<faces>... (+|-) <modifier>
+const VALID_FACES_LIST = [...VALID_FACES].sort((a, b) => a - b).join(", ")
+
 export function parseNotation(input: string): ParsedNotation {
   const raw = input.trim()
   if (!raw) {
-    throw new NotationError("Notation vide")
+    throw new NotationError("empty", "Empty notation")
   }
 
-  // Normalisation : enlève les espaces internes
   const cleaned = raw.replace(/\s+/g, "").toLowerCase()
-
-  // Découpe en tokens en gardant les opérateurs +/-
   const tokens = cleaned.split(/(?=[+-])/g)
   const groups: DiceGroup[] = []
   let modifier = 0
@@ -32,39 +48,43 @@ export function parseNotation(input: string): ParsedNotation {
     if (!body) continue
 
     if (body.includes("d")) {
-      const group = parseDiceGroup(body)
       if (sign === -1) {
-        // Un groupe négatif n'a pas de sens en notation classique — on traite comme erreur
-        throw new NotationError(`Groupe de dés négatif non supporté : ${token}`)
+        throw new NotationError(
+          "negativeGroup",
+          `Negative dice group not supported: ${token}`,
+          { token },
+        )
       }
+      const group = parseDiceGroup(body)
       groups.push(group)
     } else {
       const num = Number.parseInt(body, 10)
       if (Number.isNaN(num)) {
-        throw new NotationError(`Token invalide : ${token}`)
+        throw new NotationError(
+          "invalidToken",
+          `Invalid token: ${token}`,
+          { token },
+        )
       }
       modifier += sign * num
     }
   }
 
   if (groups.length === 0) {
-    throw new NotationError("Aucun groupe de dés trouvé")
+    throw new NotationError("noDice", "No dice group found")
   }
 
   return { groups, modifier, raw }
 }
 
 function parseDiceGroup(body: string): DiceGroup {
-  // Patterns acceptés :
-  //   <count>d<faces>
-  //   <count>d<faces>kh<n> | kl<n> | dh<n> | dl<n>
-  //   <count>d<faces>! (exploding)
-  //   <count>d<faces>r1 (reroll on 1)
-  const match = body.match(
-    /^(\d*)d(\d+)(kh|kl|dh|dl)?(\d+)?(!)?(r1)?$/i,
-  )
+  const match = body.match(/^(\d*)d(\d+)(kh|kl|dh|dl)?(\d+)?(!)?(r1)?$/i)
   if (!match) {
-    throw new NotationError(`Groupe de dés invalide : ${body}`)
+    throw new NotationError(
+      "invalidGroup",
+      `Invalid dice group: ${body}`,
+      { body },
+    )
   }
 
   const [, countStr, facesStr, keepKind, keepNStr, bang, rOne] = match
@@ -72,23 +92,30 @@ function parseDiceGroup(body: string): DiceGroup {
   const faces = Number.parseInt(facesStr, 10)
 
   if (count <= 0 || count > 100) {
-    throw new NotationError("Le nombre de dés doit être entre 1 et 100")
+    throw new NotationError(
+      "countOutOfRange",
+      "Dice count must be between 1 and 100",
+      { count, max: 100 },
+    )
   }
   if (!VALID_FACES.has(faces)) {
     throw new NotationError(
-      `Type de dé non supporté : d${faces}. Faces valides : ${[...VALID_FACES].join(", ")}`,
+      "unsupportedFaces",
+      `Unsupported dice type: d${faces}. Valid faces: ${VALID_FACES_LIST}`,
+      { faces, valid: VALID_FACES_LIST },
     )
   }
 
   const type = `d${faces}` as DiceType
-
   const group: DiceGroup = { count, type }
 
   if (keepKind && keepNStr) {
     const n = Number.parseInt(keepNStr, 10)
     if (n <= 0 || n > count) {
       throw new NotationError(
-        `Le nombre à garder/retirer (${n}) doit être entre 1 et ${count}`,
+        "keepOutOfRange",
+        `Keep/drop count (${n}) must be between 1 and ${count}`,
+        { n, max: count },
       )
     }
     group.keep = { kind: keepKind.toLowerCase() as "kh" | "kl" | "dh" | "dl", n }
@@ -100,7 +127,6 @@ function parseDiceGroup(body: string): DiceGroup {
   return group
 }
 
-// Reformate une notation parsée en string canonique
 export function stringifyNotation(parsed: ParsedNotation): string {
   const parts: string[] = []
   for (const g of parsed.groups) {

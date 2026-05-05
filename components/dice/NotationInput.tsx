@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useDiceStore } from "@/store/diceStore"
-import { parseNotation, NotationError } from "@/lib/diceParser"
+import { parseNotation } from "@/lib/diceParser"
+import { notationErrorMessage } from "@/lib/notationErrorMessage"
 import { cn } from "@/lib/utils"
 import { NotationHelpDialog } from "@/components/dice/NotationHelpDialog"
 
@@ -25,8 +26,7 @@ export function NotationInput() {
       parseNotation(value)
       setError(null)
     } catch (e) {
-      if (e instanceof NotationError) setError(e.message)
-      else setError(t("notationInvalid"))
+      setError(notationErrorMessage(e, t))
     }
   }
 
@@ -49,7 +49,7 @@ export function NotationInput() {
         <NotationHelpDialog />
       </div>
       {error ? (
-        <p id="notation-error" className="text-destructive text-xs">
+        <p id="notation-error" className="text-destructive text-xs leading-snug">
           {error}
         </p>
       ) : (
